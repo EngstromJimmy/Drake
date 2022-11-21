@@ -1,0 +1,58 @@
+{
+  "uri": "http://detectify/module.json",
+  "additionalProperties": true,
+  "definitions": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "method": { "enum": [ "GET", "POST", "HEAD", "PUT", "OPTIONS", "PATCH", "DELETE" ] },
+        "path": { "type": "string" },
+        "paths": { "type": "array" },
+        "body": { "type": "object" },
+        "headers": { "type": "array" }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "matchesRequired": { "type": "integer" },
+        "matches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/match"
+          }
+        },
+        "mustNotMatch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/match"
+          }
+        }
+      }
+    },
+    "match": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [ "static", "regex", "status", "header" ]
+        },
+        "pattern": { "type": "string" },
+        "status": { "type": "integer" },
+        "name": { "type": "string" },
+        "code": { "type": "integer" }
+      }
+    }
+  },
+  "properties": {
+    "submitter": { "type": "string" },
+    "request": {
+      "$ref": "#/definitions/request"
+    },
+    "response": {
+      "$ref": "#/definitions/response"
+    }
+
+  },
+  "required": [ "response", "request" ]
+}
