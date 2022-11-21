@@ -2,7 +2,7 @@
 
 name: Compile Drake
 env:
-  PUBLISH_DIR: \Drake\bin\Release\net7.0\publish\wwwroot
+  PUBLISH_DIR: Drake/bin/Release/net7.0/publish/wwwroot
 
 # Controls when the workflow will run
 on:
@@ -36,7 +36,7 @@ jobs:
       #  run: dotnet workload install wasm-tools
       
       - name: Publish application
-        run: dotnet publish -c Release \Drake\Drake.csproj
+        run: dotnet publish -c Release Drake/Drake.csproj
         
  
       - name: Change base-tag in index.html from / to BlazorGitHubPagesDemo
