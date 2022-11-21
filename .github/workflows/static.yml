@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Compile Drake
+name: Publish Drake
 env:
   PUBLISH_DIR: Drake/bin/Release/net7.0/publish/wwwroot
 
@@ -40,7 +40,7 @@ jobs:
         
  
       - name: Change base-tag in index.html from / to BlazorGitHubPagesDemo
-        run: (Get-content -path '${{ env.PUBLISH_DIR }}/index.html') -replace '<base href="/" />', '<base href="/drake/"/>' | Out-File -FilePath '${{ env.PUBLISH_DIR }}/index.html'
+        run: (Get-content -path '${{ env.PUBLISH_DIR }}/index.html') -replace '<base href="/" />', '<base href="/Drake/"/>' | Out-File -FilePath '${{ env.PUBLISH_DIR }}/index.html'
  
         # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. 
         # Allow files and folders starting with an underscore.
