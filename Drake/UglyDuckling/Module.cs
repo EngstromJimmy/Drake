@@ -40,13 +40,13 @@ public class Request
 public class Response
 {
 	[JsonPropertyName("matchesRequired")]
-	public int MatchesRequired { get; set; } = 0;
+	public int MatchesRequired { get; set; } = 1;
 
 	[JsonPropertyName("matches")]
-	public List<Match> Matches { get; set; }
+	public List<Match> Matches { get; set; } = new();
 
 	[JsonPropertyName("mustNotMatch")]
-	public List<Match> MustNotMatch { get; set; }
+	public List<Match> MustNotMatch { get; set; } = new();
 }
 
 public class Module

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drake", "Drake\Drake.csproj", "{7C812D56-13C8-4D09-B265-737554FDD603}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drake.Tests", "Drake.Tests\Drake.Tests.csproj", "{9195EF68-2F50-4A57-88AF-3548A61760E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7C812D56-13C8-4D09-B265-737554FDD603}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C812D56-13C8-4D09-B265-737554FDD603}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C812D56-13C8-4D09-B265-737554FDD603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9195EF68-2F50-4A57-88AF-3548A61760E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9195EF68-2F50-4A57-88AF-3548A61760E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9195EF68-2F50-4A57-88AF-3548A61760E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9195EF68-2F50-4A57-88AF-3548A61760E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
