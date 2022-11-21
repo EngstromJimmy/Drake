@@ -1,0 +1,228 @@
+﻿@page "/EditModule"
+@using System.Text.Json;
+@using Drake.Modules;
+@inject IHttpClientFactory factory 
+
+<div class="mainarea">
+	<MonacoEditor Id="monacoeditor" @ref="_monacoeditor" ConstructionOptions="EditorConstructionOptions" />
+	<span class="failed">@ErrorMessage</span>
+</div>
+<div class="sidearea">
+	<input type="text" class="urlbox" @bind="@Url" placeholder="Url" />
+	<Button OnClick="TestModule">Test Module</Button>
+	@foreach(var e in Errors)
+	{
+		@e.Range.StartLineNumber <br/>
+	}
+	@if (TestResults.Any())
+	{
+		<h2>Test results</h2>
+		<ul>
+		@foreach (var r in TestResults)
+		{
+			<li title="@r.Match.Pattern">
+				@if (r.IsMatched)
+				{
+						<span class="success">&check;</span>
+				}
+				else
+				{
+						<span class="failed">
+							&#120;
+						</span>
+				}
+				@r.Match.Type
+			</li>
+		}
+		</ul>
+		<span>Matched: @TestResults.Where(t=>t.IsMatched).Count()</span><br />
+		<span>Required: @RequiredMatches</span>
+		<br />
+
+		<br />
+
+		
+		@if ((VulnerabilityFound != null && VulnerabilityFound.Value))
+		{
+			<span class="success">Vulnerability found</span>
+			<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_wcnjmdp1.json" background="transparent" speed="1" style="width: 300px; height: 300px;margin:auto;" autoplay></lottie-player>
+		
+		}
+		else
+		{
+			<span class="failed">Vulnerability not found</span>
+			<lottie-player src="https://assets3.lottiefiles.com/packages/lf20_tl52xzvn.json" background="transparent" speed="1" style="width: 300px; height: 300px;margin:auto;" autoplay></lottie-player>
+		}
+
+	}
+	
+</div>
+
+@code
+{
+	string Url = "";
+	string Module = "";
+	string ResponseBody="";
+	List<ModelDecoration> Errors = new();
+	List<TestResult> TestResults = new();
+	MonacoEditor _monacoeditor { get; set; }
+	Module? module = null;
+	bool? VulnerabilityFound = null;
+	string ErrorMessage = "";
+	int RequiredMatches=0;
+	async Task TestModule()
+	{
+		try
+		{
+			TestResults.Clear();
+			VulnerabilityFound = null;
+			ErrorMessage = "";
+			var json = await _monacoeditor.GetValue();
+			Module? module = JsonSerializer.Deserialize<Module>(json);
+
+			//Do Request
+			var client = factory.CreateClient();
+			client.BaseAddress = new Uri(Url);
+			if (module?.Request.Path != null)
+			{
+				module.Request.Paths.Add(module.Request.Path);
+
+			}
+			foreach (var path in module.Request.Paths)
+			{
+				var requestMessage = new HttpRequestMessage();
+
+				requestMessage.Method = new HttpMethod(module.Request.Method ?? "GET");
+				requestMessage.RequestUri = new Uri(Url + path);
+				//requestMessage.SetBrowserRequestMode(BrowserRequestMode.);
+				if (requestMessage.Method.Method != "GET" && requestMessage.Method.Method != "HEAD")
+				{
+					requestMessage.Content = new StringContent(module.Request.Body ?? "");
+				}
+				if (module.Request.Headers != null && requestMessage.Content != null)
+				{
+					foreach (var header in module.Request.Headers)
+					{
+						string[] headerparts = header.Split(":");
+						requestMessage.Content.Headers.TryAddWithoutValidation(headerparts[0], headerparts[1]);
+					}
+				}
+				var response = await client.SendAsync(requestMessage);
+				var responseStatusCode = response.StatusCode;
+
+				ResponseBody = await response.Content.ReadAsStringAsync();
+
+				//Verify module
+				if (module.Response.Matches != null)
+				{
+					foreach (var match in module.Response.Matches)
+					{
+						await HandleMatch(match, (int)responseStatusCode, response, true);
+					}
+				}
+				if (module.Response.MustNotMatch != null)
+				{
+					foreach (var match in module.Response.MustNotMatch)
+					{
+						await HandleMatch(match, (int)responseStatusCode, response, false);
+					}
+				}
+
+				if (VulnerabilityFound == null)
+				{
+					VulnerabilityFound = TestResults.Where(t => t.IsMatched && t.ShouldMatch).Count() > ((module.Response.MatchesRequired) ?? 0);
+				}
+				RequiredMatches = module?.Response.MatchesRequired ?? 0;
+
+				client.Dispose();
+			}
+		}
+		catch(Exception ex)
+		{
+			ErrorMessage = ex.Message;
+		}
+	}
+
+	async Task HandleMatch(Match match, int statusCode, HttpResponseMessage response,bool shouldMatch)
+	{
+		var isMatch = !shouldMatch;
+		if (match.Type == "static")
+		{
+			if (ResponseBody.Contains(match.Pattern))
+			{
+				isMatch = shouldMatch;
+			}
+		}
+		if (match.Type == "regex")
+		{
+			System.Text.RegularExpressions.Regex regex = new(match.Pattern);
+			if (regex.IsMatch(ResponseBody))
+			{
+				isMatch = shouldMatch;
+			}
+		}
+
+		if (match.Type == "status" && match.Code != null)
+		{
+			if (statusCode == match.Code)
+			{
+				isMatch = shouldMatch;
+			}
+		}
+
+		if (match.Type == "header")
+		{
+			if (response.Headers.TryGetValues(match.Name, out var values))
+			{
+				foreach (var v in values)
+				{
+					System.Text.RegularExpressions.Regex regex = new(match.Pattern);
+					if (regex.IsMatch(v))
+					{
+						isMatch = shouldMatch;
+					}
+				}
+			}
+		}
+
+		if (!shouldMatch && isMatch) //Should not match
+		{
+			VulnerabilityFound = false;
+		}
+		TestResults.Add(new() { Match = match, IsMatched = isMatch, ShouldMatch=shouldMatch });
+	}
+
+	bool monacoInitialized = false;
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!monacoInitialized && _monacoeditor != null)
+		{
+			try
+			{
+				var model = await _monacoeditor.GetModel();
+				await model.jsRuntime.InvokeVoidAsync("setModelSchema", model.Uri);
+				monacoInitialized = true;
+			}
+			catch { }
+			//This is a horrible workaround to get Monaco loaded without having a button
+			StateHasChanged();
+
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+
+
+	StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+	{
+		return new StandaloneEditorConstructionOptions
+			{
+				AutomaticLayout = true,
+				Theme = "vs-dark",
+				Language = "json",
+				Value = tempjson
+			};
+	}
+
+
+}

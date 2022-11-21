@@ -1,0 +1,27 @@
+﻿@page "/"
+@inject NavigationManager manager
+
+<div class="fullarea">
+    <lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_oiaetlzu.json" background="transparent" speed="1" style="width: 300px; height: 300px;margin:auto;" loop autoplay></lottie-player>
+    <br />
+
+    <h2>Prerequisities</h2>
+    Ugly duckling is running completely inside the web browser.
+    To be able to make calls to outher websites CORS needs to be temporarily disabled.
+
+    <h3>Microsoft Edge</h3>
+    Install the following extension.<br />
+    <a href="https://microsoftedge.microsoft.com/addons/detail/cors-unblock/hkjklmhkbkdhlgnnfbbcihcajofmjgbh">Get Extension</a>
+
+    <h3>Google Chrome</h3>
+    Install the following extension.<br />
+    <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino">Get Extension</a>
+    <br />
+    <Button OnClick="NavigateToDuckling"> Got it, lets go!</Button>
+</div>
+@code {
+    void NavigateToDuckling()
+    {
+        manager.NavigateTo("/EditModule");
+    }
+}

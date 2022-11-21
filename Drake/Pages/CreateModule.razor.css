@@ -1,0 +1,19 @@
+    ::deep .monaco-editor-container {
+        height: 500px;
+        border: 1px solid gray;
+    }
+
+    ::deep .decorationGlyphMarginClass {
+        background: red;
+    }
+
+    ::deep .decorationContentClass {
+        background: lightblue;
+    }
+
+    .urlbox {
+        width: 100%;
+        font-size: 1.8rem;
+        line-height: 2.8rem;
+        margin-bottom: 10px;
+    }

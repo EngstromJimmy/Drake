@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>UglyDuckling</title>
+    <base href="/" />
+    <link href="Drake.styles.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="css/drake.css" rel="stylesheet" />
+    <link href="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.css" rel="stylesheet" />
+    <script>
+        var module = {
+            uri: "http://detectify/module.json",
+            fileMatch: ["*"],
+            schema: {
+                type: "object",
+                properties:
+                {
+                    submitter: { type:"string" },                     
+                    request:
+                    {
+                        $ref: "http://detectify/request.json"
+                    },
+                    response:
+                    {
+                        $ref: "http://detectify/response.json"
+                    }
+
+                },
+                required: ["response","request"]
+            }
+        };
+
+        var request = {
+            uri: "http://detectify/request.json",
+            schema: {
+                type: "object",
+                properties: {
+                    method: { enum: ["GET", "POST", "HEAD", "PUT", "OPTIONS", "PATCH", "DELETE"] },
+                    path: { type: "string" },
+                    paths: { type: "array" },
+                    body: { type: "object" },
+                    headers: {type:"array"}
+                }
+            }
+        };
+
+        var response = {
+            uri: "http://detectify/response.json",
+            schema: {
+                type: "object",
+                properties: {
+                    matchesRequired: { type:"integer" },
+                    matches: {
+                        type: "array",
+                        items:
+                        {
+                            $ref: "http://detectify/match.json"
+                        }
+                    },
+                    mustNotMatch: {
+                        type: "array",
+                        items:
+                        {
+                            $ref: "http://detectify/match.json"
+                        }
+                    },
+                }
+            }
+        };
+
+        var match = {
+            uri: "http://detectify/match.json",
+            schema: {
+                type: "object",
+                properties: {
+                    type: {type: "string", enum: ["static","regex","status","header"]},
+                    pattern: { type:"string" },
+                    status: { type: "integer" },
+                    name: { type: "string" },
+                    code: {type:"integer"}
+                }
+            }
+        };
+        
+        function setModelSchema(modelUri)
+        {
+            monaco.languages.json.jsonDefaults.setDiagnosticsOptions(
+            {
+                validate: true,
+                schemas: [module,request,response,match]
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_oiaetlzu.json" background="transparent" speed="1" style="width: 300px; height: 300px;margin:auto;" loop autoplay></lottie-player>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+    <script>require.config({ paths: { 'vs': '_content/BlazorMonaco/lib/monaco-editor/min/vs' } });</script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <script src="_content/BlazorMonaco/jsInterop.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    
+</body>
+
+</html>

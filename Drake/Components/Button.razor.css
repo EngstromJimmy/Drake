@@ -1,0 +1,13 @@
+button {
+    font-family: 'Averta Standard', sans-serif;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 2px;
+    
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    width: 100%;
+}

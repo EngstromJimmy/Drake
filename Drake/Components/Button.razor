@@ -1,0 +1,22 @@
+﻿<button @onclick="@ExecuteClick" disabled="@(executing)">
+    @ChildContent
+</button>
+
+@code {
+    bool executing = false;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    async Task ExecuteClick()
+    {
+        executing = true;
+        StateHasChanged();
+        await OnClick.InvokeAsync();
+        executing = false;
+    }
+
+}
