@@ -92,6 +92,11 @@
                 schemas: [module,request,response,match]
             });
         }
+        function getMarkers()
+        {
+            return monaco.editor.getModelMarkers({ owner: 'json' });
+        }
+
     </script>
 </head>
 

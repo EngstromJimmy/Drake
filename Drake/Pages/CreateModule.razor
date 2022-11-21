@@ -4,16 +4,19 @@
 @inject IHttpClientFactory factory 
 
 <div class="mainarea">
-	<MonacoEditor Id="monacoeditor" @ref="_monacoeditor" ConstructionOptions="EditorConstructionOptions" />
+	<MonacoEditor Id="monacoeditor" OnDidChangeModelDecorations="ModelDecorationChanged" @ref="_monacoeditor" ConstructionOptions="EditorConstructionOptions" />
 	<span class="failed">@ErrorMessage</span>
+	<span class="failed">
+		@foreach (var e in Errors)
+		{
+			@e.startLineNumber @e.message <br />
+		}
+	</span>
 </div>
 <div class="sidearea">
 	<input type="text" class="urlbox" @bind="@Url" placeholder="Url" />
 	<Button OnClick="TestModule">Test Module</Button>
-	@foreach(var e in Errors)
-	{
-		@e.Range.StartLineNumber <br/>
-	}
+	
 	@if (TestResults.Any())
 	{
 		<h2>Test results</h2>
@@ -60,10 +63,17 @@
 
 @code
 {
+
+	async Task ModelDecorationChanged(ModelDecorationsChangedEvent ev)
+	{
+		var model = await _monacoeditor.GetModel();
+		Errors=await model.jsRuntime.InvokeAsync<List<Marker>>("getMarkers", model.Uri);
+
+	}
 	string Url = "";
 	string Module = "";
 	string ResponseBody="";
-	List<ModelDecoration> Errors = new();
+	List<Marker> Errors = new();
 	List<TestResult> TestResults = new();
 	MonacoEditor _monacoeditor { get; set; }
 	Module? module = null;

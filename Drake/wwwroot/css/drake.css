@@ -32,11 +32,11 @@ main {
 
 .mainarea {
     grid-area: Main;
-    padding: 10px 10px 10px 10px;
+
 }
 .sidearea {
     grid-area: Side;
-    padding: 10px 10px 10px 10px;
+    padding-left:20px;
 }
 
 
