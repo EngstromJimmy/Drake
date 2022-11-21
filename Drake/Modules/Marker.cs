@@ -1,6 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace Drake.Modules;
 public class Marker
 {
-	public int startLineNumber { get; set; }
-	public string message { get; set; }
+	[JsonPropertyName("startLineNumber")]
+	public int StartLineNumber { get; set; }
+	[JsonPropertyName("message")]
+	public string Message { get; set; }
 }
