@@ -18,3 +18,27 @@ What would be the best way to edit a JSON file?
 
 Since Microsoft has released a version of Monaco (the engine VSCode is running) I wanted to give that a try.
 
+The goal of the project is to make it easier to write and test modules for Ugly Duckling.
+## Usage
+There are two ways to use this application.
+1. We can use the online version at https://engstromjimmy.github.io/drake with an version of Monaco (VSCode).  
+This is the easiest way to get started.   
+With full module intellisence and an easy way to test our module.
+2. We can use VSCode directly by simply refering to the JSON Schema.
+```
+{
+  "$schema": "https://raw.githubusercontent.com/EngstromJimmy/Drake/main/ModuleSchema.json",
+  "response": {
+    "matches": [
+      {
+        "type": "status",
+        "code": 200
+      },
+      {
+        "name": "Hello World",
+        "type":"regex"
+      }
+    ]
+  }
+}
+```
