@@ -1,10 +1,14 @@
 {
-  "$schema": "./ModuleSchema.json",
+  "$schema": "https://raw.githubusercontent.com/EngstromJimmy/Drake/main/ModuleSchema.json",
   "response": {
     "matches": [
       {
         "type": "status",
         "code": 200
+      },
+      {
+        "name": "Hello World",
+        "type":"regex"
       }
     ]
   }
