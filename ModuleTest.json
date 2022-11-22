@@ -1,0 +1,11 @@
+{
+  "$schema": "./ModuleSchema.json",
+  "response": {
+    "matches": [
+      {
+        "type": "status",
+        "code": 200
+      }
+    ]
+  }
+}

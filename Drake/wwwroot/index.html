@@ -80,7 +80,57 @@
                     status: { type: "integer" },
                     name: { type: "string" },
                     code: {type:"integer"}
-                }
+                },
+                "oneOf":
+                    [
+                        {
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["static"]
+                                },
+                                "pattern": { "type": "string" }
+                            },
+                            "required": ["type", "pattern"],
+                            "additionalProperties": false
+                        },
+                        {
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["status"]
+                                },
+                                "code": { "type": "integer" }
+                            },
+                            "required": ["type", "code"],
+                            "additionalProperties": false
+                        },
+                        {
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["header"]
+                                },
+                                "name": { "type": "string" },
+                                "pattern": { "type": "string" }
+
+                            },
+                            "required": ["type", "name", "pattern"],
+                            "additionalProperties": false
+                        },
+                        {
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["regex"]
+                                },
+                                "pattern": { "type": "string" }
+
+                            },
+                            "required": ["type", "pattern"],
+                            "additionalProperties": false
+                        }
+                    ]
             }
         };
         
