@@ -21,7 +21,7 @@ I also added a JSON schema that can be used in the web implementation or directl
 The goal of the project is to make it easier to write and test modules for Ugly Duckling.
 ## Usage
 There are two ways to use this application.
-1. We can use the online version at https://engstromjimmy.github.io/drake with an version of Monaco (VSCode).  
+1. We can use the online version at https://engstromjimmy.github.io/Drake with an version of Monaco (VSCode).  
 This is the easiest way to get started. 
 Since it is JavaScript making the calls we need to install a plugin in the Web browser to be able to make cross-site calls.
 But if you want to test it without installing anything you can test the default module with the URL "https://engstromjimmy.github.io/Drake/".
