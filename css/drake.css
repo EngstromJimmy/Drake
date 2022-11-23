@@ -1,0 +1,64 @@
+:root {
+    --accent-color: #ffbc00;
+    --button-color: #ffbc00;
+    --text-color: white;
+    --button-text-color: #252734;
+    --link-text-color: var(--accent-color);
+    --background-color: #333646;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
+body {
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+    font-family: 'Averta Standard', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding:20px
+}
+
+main {
+    display: grid;
+    grid-template-columns: [Main] 5fr [Side] 2fr;
+    grid-auto-columns: 1fr;
+    gap: 0;
+    grid-auto-flow: row;
+}
+
+.mainarea {
+    grid-area: Main;
+
+}
+.sidearea {
+    grid-area: Side;
+    padding-left:20px;
+}
+
+
+.failed {
+    content: "\2713";
+    color:red;
+}
+
+.success {
+    content: "\2717";
+    color:green;
+}
+
+li{
+    list-style-type:none;
+}
+
+a {
+    color: var(--link-text-color);
+}
+
+h2,h3{
+    margin-top:7px;
+    margin-bottom:2px;
+}

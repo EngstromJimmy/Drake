@@ -1,0 +1,43 @@
+/* /Components/Button.razor.rz.scp.css */
+button[b-f1miqj82wt] {
+    font-family: 'Averta Standard', sans-serif;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 2px;
+    
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    width: 100%;
+}
+
+button:active:hover[b-f1miqj82wt] {
+    margin:2px 0px 0px 2px;
+}
+/* /Pages/CreateModule.razor.rz.scp.css */
+    [b-mtsfq6l0ee] .monaco-editor-container {
+        height: 500px;
+        border: 1px solid gray;
+    }
+
+    [b-mtsfq6l0ee] .decorationGlyphMarginClass {
+        background: red;
+    }
+
+    [b-mtsfq6l0ee] .decorationContentClass {
+        background: lightblue;
+    }
+
+    .urlbox[b-mtsfq6l0ee] {
+        width: 100%;
+        font-size: 1.8rem;
+        line-height: 2.8rem;
+        margin-bottom: 10px;
+    }
+/* /Pages/Index.razor.rz.scp.css */
+.fullarea[b-hr102b8sy7] {
+    grid-column: 1/3 ;
+    grid-row:1;
+}
